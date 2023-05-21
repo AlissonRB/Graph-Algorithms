@@ -1,5 +1,5 @@
 from grafo import Grafo
-#from fortementeConexas import ComponentesFortementeConexas
+from fortementeConexas import ComponentesFortementeConexas
 # from busca_largura import BuscaLargura
 # from ciclo_euleriano import CicloEuleriano
 # from bellman_ford import BellmanFord
@@ -17,10 +17,9 @@ print ("Componentes Fortemente Conexas:")
 
 
 grafo.ler('dirigido1.net')
-
-# fortemente_conexas = ComponentesFortementeConexas()
-# fortemente_conexas.componentes_fortemente_conexas(grafo)
-print("vertices",grafo.vertices)
+fortemente_conexas = ComponentesFortementeConexas()
+componentes = fortemente_conexas.componentes_fortemente_conexas(grafo)
+print("componentes conexas:",componentes)
 
 # print('Quantidade de vértices do grafo:', grafo.qtdVertices())
 # print('Quantidade de arestas do grafo:', grafo.qtdArestas())

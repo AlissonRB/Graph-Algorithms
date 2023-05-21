@@ -1,148 +1,119 @@
 from grafo import Grafo
 
+
 class ComponentesFortementeConexas:
 
     #grafo transposto basta inverter as arestas
-    def componentes_fortemente_conexas(self, grafo):
     #recebe um grafo dirigido nao ponderado G = (V, A)
-
-    #faz uma busca em profundidade sobre o grafo g 
-
+    def componentes_fortemente_conexas(self, grafo):
+        
+        #faz uma busca em profundidade sobre o grafo g 
         visitados, tempo_inicial, antecessores, tempo_final = self.algoritmo_16(grafo)
 
-        #tempo_final é um dicionario = {vertice = tempo_final}
-        #pega os vertice do grafo, e ordena de acordo com o tempo_final retornado
+        # print("visitados: ", visitados)
+        # print(" tempo inicial:", tempo_inicial)
+        # print(" tempo final:", tempo_final)
+        # print("Antecessores: ", antecessores)
+        
+        grafo_transposto = self.criar_grafo_transposto(grafo)
 
-        #A- é um conjunto de arestas
+        #vertices_ordenados = self.ordenar_vertices_decrescente(grafo_transposto, tempo_final)
+        #print(vertices_ordenados)
+        visitados_trasposto, tempo_inicial_transposto, antecessores_transposto, tempo_final_transposto = self.algoritmo_16_adaptado(grafo_transposto, tempo_final)
 
+        print("grafo transposto:")
+        print("visitados: ", visitados_trasposto)
+        print(" tempo inicial:", tempo_inicial_transposto)
+        print(" tempo final:", tempo_final_transposto)
+        print("Antecessores: ", antecessores_transposto)
+
+        return self.encontrar_componente_fortemente_conexas(grafo, antecessores_transposto)
+
+    def criar_grafo_transposto(self, grafo):
         grafo_transposto = Grafo()
         grafo_transposto.vertices = grafo.vertices
-        arestas_transposto = [(y, x) for x, y in grafo.arestas]
-        grafo_transposto.peso = grafo.peso
+        grafo_transposto.pesos = grafo.pesos
 
-        visitados_trasposto, tempo_inicial_transposto, antecessores_transposto, tempo_final_transposto = self.algoritmo_16_adaptado(grafo_transposto)
+        for aresta in grafo.arestas:
+            aresta_transposta = (aresta[1], aresta[0])
+            grafo_transposto.arestas.append(aresta_transposta)
+        
+        return grafo_transposto
 
-        return antecessores_transposto
-    #passa so o grafo, pq como queremos visitar todos os 
-    #vertices, o vertice inicial é arbitrario
     def algoritmo_16 (self, grafo): 
     
-        #estrutura de arestas visitadas
-        visitadas = {}
-        for aresta in grafo.arestas:
-            visitadas[aresta] = False
-        
-        #grafo.vertices =  {1: 'Universidade Federal de Santa Catarina',
-        tempo_inicial = {}
-        for chave, valor in grafo.vertices.items():
-            tempo_inicial[chave] = float("inf")
-        
-        #estrutura do tempo final da visita
-        tempo_final = {}
-        for chave, valor in grafo.vertices.items():
-            tempo_final[chave] = float("inf")
+        #definindo as estruturas
+        visitados = [False] * grafo.qtdVertices()
+        tempo_inicial = [float('inf')] * grafo.qtdVertices()
+        tempo_final = [float('inf')] * grafo.qtdVertices()
+        antecessores = [None] * grafo.qtdVertices()
 
-        #estrutura de antecessores de um vertice
-        antecessores = {}
-        for chave, valor in grafo.vertices.items():
-            antecessores[chave]  = None
-        
         #configurando tempo de inicio
         tempo = 0
 
         #escolhe um vertice aleatorio
-        for vertice in grafo.vertices:
-            if visitadas[vertice] == False:
+        for u in grafo.vertices.keys():
+            if not visitados[u -1]:
                 #DFS-Visit- algoritmo 17
-                self.algoritmo_17(grafo,vertice,visitadas,tempo_inicial,antecessores,tempo_final, tempo)
-        return (visitadas,tempo_inicial,antecessores,tempo_final)
-
-    #vertices {1: 'A', 2: 'B', 3: 'C', 4: 'D', 5: 'E', 6: 'F', 7: 'G', 8: 'H'}
-    #ordena os vertices de um dicionario de acordo com o tempo final
-    def ordenar_decrescente(self,vertices: dict, tempo: dict):
-        vertices_ordenados = {}
-        maior = 0
-        for chave, valor in vertices:
-            if valor > maior:
-                maior = valor
-
-        while len(vertices) != 0:
-            for chave, valor in vertices.items():
-                if valor == maior:
-                    vertices_ordenados
-
-    #o vertice v nao é arbitrario, e definido pela ordem decrescente dos 
-    # valores da estrutura de dados F(tempo_final)
+                self.algoritmo_17(grafo, u, visitados, tempo_inicial, antecessores, tempo_final, tempo)
+        return (visitados, tempo_inicial, antecessores, tempo_final)
 
     #linha 6 do algoritmo 16- unica mudanca
-    def algoritmo_16_adaptado (self, grafo): 
+    def algoritmo_16_adaptado (self, grafo, tempo_final_original): 
     
-        #estrutura de arestas visitadas
-        visitadas = {}
-        for aresta in grafo.arestas:
-            visitadas[aresta] = False
-        
-        #estrutura de tempo inicial
-        #para cada vertice no grafo o tempo é igual a infinito
-        #essa estrutura so existe aqui nao na classe grafo
-        #grafo.vertices =  {1: 'Universidade Federal de Santa Catarina',
-        tempo_inicial = {}
-        for chave, valor in grafo.vertices.items():
-            tempo_inicial[chave] = float("inf")
-        
-        #estrutura do tempo final da visita
-        tempo_final = {}
-        for chave, valor in grafo.vertices.items():
-            tempo_final[chave] = float("inf")
-
-        #estrutura de antecessores de um vertice
-        antecessores = {}
-        for chave, valor in grafo.vertices.items():
-            antecessores[chave]  = None
+        #definindo as estruturas
+        visitados = [False] * grafo.qtdVertices()
+        tempo_inicial = [float('inf')] * grafo.qtdVertices()
+        tempo_final = [float('inf')] * grafo.qtdVertices()
+        antecessores = [None] * grafo.qtdVertices()
         
         #configurando tempo de inicio
         tempo = 0
 
         #escolhe um vertice em ordem decrescente
-        for vertice in grafo.vertices:
-            if visitadas[vertice] == False:
-                #DFS-Visit- algoritmo 17
-                self.algoritmo_17(grafo,vertice,visitadas,tempo_inicial,antecessores,tempo_final,tempo)
         
-        return (visitadas,tempo_inicial,antecessores,tempo_final)
+        while True:
+                maior_tempo = max(tempo_final_original)
+                indice_maior = tempo_final_original.index(maior_tempo)
+                tempo_final_original[indice_maior] = -1
+                if not visitados[indice_maior]:
+                    #DFS-Visit- algoritmo 17
+                    self.algoritmo_17(grafo,indice_maior,visitados,tempo_inicial,antecessores,tempo_final,tempo)
+                
+                continuar = False
+                for num in tempo_final_original:
+                    if num > -1:
+                        continuar = True
+                if continuar == False:
+                    break
+        return (visitados,tempo_inicial,antecessores,tempo_final)
 
     #linha4: para cada arco sainte de vertic e
-    def algoritmo_17 (self,grafo, vertice, visitados, tempo_inicial, antecessores, tempo_final, tempo):
-        visitados[vertice - 1] = True
+    def algoritmo_17 (self,grafo, u, visitados, tempo_inicial, antecessores, tempo_final, tempo):
+        visitados[u - 1] = True
         tempo += 1
-        tempo_inicial[vertice-1] = tempo
+        tempo_inicial[u-1] = tempo
 
-        #para cada vizinho do vertice, que tenha aresta saintes
-        # se nao foi visitado ainda
-        #antecessor do vizinho vai ser o vertice
-        vizinhos = grafo.vizinhos(vertice)
+        vizinhos = grafo.vizinhos(u)
         for vizinho in vizinhos:
-            if visitados[vizinho] == False:
-                antecessores[vizinho] = vertice
+            if not visitados[vizinho-1]:
+                antecessores[vizinho-1] = u
                 self.algoritmo_17(grafo, vizinho, visitados, tempo_inicial, antecessores, tempo_final, tempo)
         tempo += 1
-        tempo_final = tempo
-
-        #chama novamente essa mesma funcao passando como vertice de origem esse vizinho, para fazer a busca em profundidade
+        tempo_final[u -1 ] = tempo
     
-    #vertices {1: 'A', 2: 'B', 3: 'C', 4: 'D', 5: 'E', 6: 'F', 7: 'G', 8: 'H'}
     def encontrar_componente_fortemente_conexas(self, grafo, antecessores):
         componentes = []
         visitados = []
 
-        for vertice in grafo.vertice:
+        for vertice in grafo.vertices:
             if vertice not in visitados:
                 componente = []
                 while vertice is not None and vertice not in visitados:
                     componente.append(vertice)
                     visitados.append(vertice)
-                    vertice = antecessores[vertice]
+                    vertice = antecessores[vertice-1]
                 if len(componente) > 1:
-                    componente.append(componente)
+                    componentes.append(componente)
 
         return componentes
