@@ -1,0 +1,20 @@
+*vertices 9
+1 "cuecas"
+2 "calca"
+3 "cinto"
+4 "sapatos"
+5 "camisa"
+6 "gravata"
+7 "paleto"
+8 "meia"
+9 "relogio"
+*edges
+1 2 1
+1 4 1
+2 3 1
+2 4 1
+3 7 1
+5 3 1
+5 6 1
+6 7 1
+8 4 1

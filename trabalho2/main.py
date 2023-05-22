@@ -1,60 +1,29 @@
 from grafo import Grafo
 from fortementeConexas import ComponentesFortementeConexas
-# from busca_largura import BuscaLargura
-# from ciclo_euleriano import CicloEuleriano
-# from bellman_ford import BellmanFord
+from ordenacaoTopologica import OrdenacaoTopologica
+from arvoreMinima import Prim
 
-#ARQUIVOS:
-#ContemCicloEuleriano.net
-# SemCicloEuleriano.net
-#fln_pequena.net
+#Alisson Rafael Barbosa 21104150
 
-#criar uma instancia do objeto grafo
-grafo = Grafo()
+#ORDENACAO TOPOLOGICA
+print("Ordenação Topológica: ")
+grafoA = Grafo()
+grafoA.ler('ordenacao.net')
+ordenacao_topologica = OrdenacaoTopologica()
+ordenacao = ordenacao_topologica.ordenacao_topologica(grafoA)
 
-#COMPONENTES FORTEMENTE CONEXAS
-print ("Componentes Fortemente Conexas:")
-
-
-grafo.ler('dirigido1.net')
-fortemente_conexas = ComponentesFortementeConexas()
-componentes = fortemente_conexas.componentes_fortemente_conexas(grafo)
-print("componentes conexas:",componentes)
-
-# print('Quantidade de vértices do grafo:', grafo.qtdVertices())
-# print('Quantidade de arestas do grafo:', grafo.qtdArestas())
-# print('Grau do vértice 9:', grafo.grau(9))
-# print('Rótulo do vértice 2:', grafo.rotulo(2))
-# print('Vizinhos do vértice 3:', grafo.vizinhos(3))
-# print('Existe aresta entre os vértices 2 e 5?', grafo.haAresta(2, 5))
-# print('Peso da aresta entre os vértices 1 e 2:', grafo.peso(1,2))
+#Arvores Geradoras Minimas
+print("Algoritmo de Prim: ")
+grafoB = Grafo()
+grafoB.ler('arvore-geradora.net')
+arvore_minima = Prim()
+arvore = arvore_minima.algoritmo_prim(grafoB)
 print()
 
-# #BUSCA EM LARGURA:
-# grafo.ler('fln_pequena.net')
-# busca = BuscaLargura()
-# nivel, antecessor = busca.busca_largura(grafo, 7)
-# busca.imprimir(grafo,nivel)
-# print()
-
-# # #CICLO EULERIANO -- Implementação não foi bem sucedida
-# print("Ciclo Euleriano: ")
-# #grafo.ler('SemCicloEuleriano.net')
-# grafo.ler('ContemCicloEuleriano.net')
-# ciclo_euleriano = CicloEuleriano()
-# r, ciclo = ciclo_euleriano.ciclo_euleriano(grafo)
-# if r is False:
-#     print("0")
-# else:
-#     print("1")
-#     print(' '.join(map(str, ciclo)))
-# print("\n")
-
-# #BELLMAN-FORD
-# print("Bellman-Ford: ")
-# grafo.ler('fln_pequena.net')
-# bellman_ford  = BellmanFord()
-# boleano, distancia, predecessores = bellman_ford.bellman_ford(grafo, 1)
-# bellman_ford.imprimir_caminhos(grafo,distancia, predecessores)
-
-
+#COMPONENTES FORTEMENTE CONEXAS
+grafoC = Grafo()
+print ("Componentes Fortemente Conexas:")
+grafoC.ler('exemplo1.net')
+fortemente_conexas = ComponentesFortementeConexas()
+componentes = fortemente_conexas.componentes_fortemente_conexas(grafoC)
+print("componentes conexas:",componentes)

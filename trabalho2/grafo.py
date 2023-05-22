@@ -59,7 +59,8 @@ class Grafo:
         with open(arquivo, 'r') as f:
             linhas = f.readlines()
             i = 1
-            while linhas[i].strip() != '*arcs':
+            #while linhas[i].strip() != '*arcs':
+            while linhas[i].strip() != '*arcs' and linhas[i].strip() != '*edges':
                 indice = int(linhas[i].split()[0])
                 rotulo = linhas[i].split()[1]
                 self.vertices[indice] = rotulo
@@ -72,4 +73,5 @@ class Grafo:
                 self.arestas.append(aresta)
                 self.pesos[aresta] = peso
                 i += 1
+
 

@@ -10,22 +10,11 @@ class ComponentesFortementeConexas:
         #faz uma busca em profundidade sobre o grafo g 
         visitados, tempo_inicial, antecessores, tempo_final = self.algoritmo_16(grafo)
 
-        # print("visitados: ", visitados)
-        # print(" tempo inicial:", tempo_inicial)
-        # print(" tempo final:", tempo_final)
-        # print("Antecessores: ", antecessores)
-        
         grafo_transposto = self.criar_grafo_transposto(grafo)
 
         #vertices_ordenados = self.ordenar_vertices_decrescente(grafo_transposto, tempo_final)
         #print(vertices_ordenados)
         visitados_trasposto, tempo_inicial_transposto, antecessores_transposto, tempo_final_transposto = self.algoritmo_16_adaptado(grafo_transposto, tempo_final)
-
-        print("grafo transposto:")
-        print("visitados: ", visitados_trasposto)
-        print(" tempo inicial:", tempo_inicial_transposto)
-        print(" tempo final:", tempo_final_transposto)
-        print("Antecessores: ", antecessores_transposto)
 
         return self.encontrar_componente_fortemente_conexas(grafo, antecessores_transposto)
 
@@ -40,7 +29,7 @@ class ComponentesFortementeConexas:
         
         return grafo_transposto
 
-    def algoritmo_16 (self, grafo): 
+    def algoritmo_16(self, grafo): 
     
         #definindo as estruturas
         visitados = [False] * grafo.qtdVertices()
@@ -59,7 +48,7 @@ class ComponentesFortementeConexas:
         return (visitados, tempo_inicial, antecessores, tempo_final)
 
     #linha 6 do algoritmo 16- unica mudanca
-    def algoritmo_16_adaptado (self, grafo, tempo_final_original): 
+    def algoritmo_16_adaptado(self, grafo, tempo_final_original): 
     
         #definindo as estruturas
         visitados = [False] * grafo.qtdVertices()
@@ -71,7 +60,6 @@ class ComponentesFortementeConexas:
         tempo = 0
 
         #escolhe um vertice em ordem decrescente
-        
         while True:
                 maior_tempo = max(tempo_final_original)
                 indice_maior = tempo_final_original.index(maior_tempo)
@@ -88,7 +76,6 @@ class ComponentesFortementeConexas:
                     break
         return (visitados,tempo_inicial,antecessores,tempo_final)
 
-    #linha4: para cada arco sainte de vertic e
     def algoritmo_17 (self,grafo, u, visitados, tempo_inicial, antecessores, tempo_final, tempo):
         visitados[u - 1] = True
         tempo += 1
